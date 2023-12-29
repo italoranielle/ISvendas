@@ -9,7 +9,32 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtCore import Qt
+import pandas as pd
+import ClientRest
 
+class QModel(QtCore.QAbstractTableModel):
+
+  def __init__(self, data):
+    QtCore.QAbstractTableModel.__init__(self)
+    self._data = data
+
+  def rowCount(self, parent=None):
+    return self._data.shape[0]
+
+  def columnCount(self, parent=None):
+    return self._data.shape[1]
+
+  def data(self, index, role=Qt.DisplayRole):
+    if index.isValid():
+        if role == Qt.DisplayRole:
+            return str(self._data.iloc[index.row(), index.column()])
+    return None
+
+  def headerData(self, col, orientation, role):
+    if orientation == Qt.Horizontal and role == Qt.DisplayRole:
+        return self._data.columns[col]
+    return None
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -203,6 +228,7 @@ class Ui_MainWindow(object):
         self.tbProd = QtWidgets.QTableView(self.tabProdutosList)
         self.tbProd.setGeometry(QtCore.QRect(0, 120, 701, 431))
         self.tbProd.setShowGrid(False)
+        self.tbProd.setSelectionBehavior( QtWidgets.QAbstractItemView.SelectRows)
         self.tbProd.setObjectName("tbProd")
         self.edProdSearch = QtWidgets.QLineEdit(self.tabProdutosList)
         self.edProdSearch.setGeometry(QtCore.QRect(160, 40, 231, 20))
@@ -268,6 +294,19 @@ class Ui_MainWindow(object):
         MainWindow.setTabOrder(self.edStockSearch, self.btStockSearch)
         MainWindow.setTabOrder(self.btStockSearch, self.tbStock)
 
+
+        self.products = ClientRest.Produtos()
+        ## acions
+        self.BtPgProduct.clicked.connect(lambda: self.changeModule(3))
+        self.BtPgSale.clicked.connect(lambda: self.changeModule(2))
+        self.BtPgCompras.clicked.connect(lambda: self.changeModule(1))
+        self.BtPgStok.clicked.connect(lambda: self.changeModule(0))
+        self.stackedWidget.currentChanged.connect(self.changeTitle)
+        self.edProdSearch.textChanged.connect(self.SearchProduct)
+
+        
+
+
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
@@ -294,7 +333,33 @@ class Ui_MainWindow(object):
         self.btProdSearch.setText(_translate("MainWindow", "Pesquisar"))
         self.TabProduList.setTabText(self.TabProduList.indexOf(self.tabProdutosList), _translate("MainWindow", "Lista"))
         self.TabProduList.setTabText(self.TabProduList.indexOf(self.TabProdcCad), _translate("MainWindow", "Cadastro"))
-        self.lbPgActual.setText(_translate("MainWindow", "Titulo"))
+        self.lbPgActual.setText(_translate("MainWindow", "Produtos"))
+
+
+    #Process Functions
+    def SearchProduct(self):
+        query = self.edProdSearch.text()
+        if len(query) > 3:
+            #print(self.products.GetProducts(query))
+            df = pd.DataFrame(self.products.GetProducts(query)).rename(columns= self.products.colouns_pt)
+            self.tbProd.setModel(QModel(df))
+            
+            
+
+
+    # UI functions
+    def changeModule(self,index):
+        self.stackedWidget.setCurrentIndex(index)
+
+    def changeTitle(self):
+        if self.stackedWidget.currentIndex() == 0:
+            self.lbPgActual.setText('Estoque')
+        elif self.stackedWidget.currentIndex() == 1:
+            self.lbPgActual.setText('Compras')
+        elif self.stackedWidget.currentIndex() == 2:
+            self.lbPgActual.setText('Vendas')
+        elif self.stackedWidget.currentIndex() == 3:
+            self.lbPgActual.setText('Produtos')
 
 
 if __name__ == "__main__":

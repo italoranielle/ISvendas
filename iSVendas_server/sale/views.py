@@ -20,8 +20,9 @@ class ProductAPIView(viewsets.ModelViewSet):
 class ProductList(APIView):
 
     def get(self, request, format=None):
-        product = Product.objects.all()
-        serializer = ProductSerializer(product, many=True)
+        description = request.GET.get('description')
+        products = Product.objects.filter(description__contains = description )
+        serializer = ProductSerializer(products, many=True)
         return Response(serializer.data)
 
     def post(self, request, format=None):

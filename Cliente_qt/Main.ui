@@ -106,7 +106,7 @@
      <number>0</number>
     </property>
     <property name="currentIndex">
-     <number>3</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="Stock">
      <widget class="QLineEdit" name="edStockSearch">
@@ -555,5 +555,22 @@
   <tabstop>tbStock</tabstop>
  </tabstops>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>stackedWidget</sender>
+   <signal>currentChanged(int)</signal>
+   <receiver>lbPgActual</receiver>
+   <slot>update()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>510</x>
+     <y>331</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>521</x>
+     <y>46</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
