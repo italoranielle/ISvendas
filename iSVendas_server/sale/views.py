@@ -20,7 +20,7 @@ class ProductAPIView(viewsets.ModelViewSet):
 class ProductList(APIView):
 
     def get(self, request, format=None):
-        description = request.GET.get('description')
+        description = request.GET.get('description','')
         products = Product.objects.filter(description__contains = description )
         serializer = ProductSerializer(products, many=True)
         return Response(serializer.data)

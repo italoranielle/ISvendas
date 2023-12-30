@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>866</width>
-    <height>623</height>
+    <width>863</width>
+    <height>625</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>IS Tech Automação Residencial</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QWidget" name="verticalLayoutWidget">
@@ -106,9 +106,12 @@
      <number>0</number>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>3</number>
     </property>
     <widget class="QWidget" name="Stock">
+     <property name="toolTip">
+      <string>Estoque</string>
+     </property>
      <widget class="QLineEdit" name="edStockSearch">
       <property name="geometry">
        <rect>
@@ -150,7 +153,7 @@
         <x>20</x>
         <y>90</y>
         <width>671</width>
-        <height>51</height>
+        <height>69</height>
        </rect>
       </property>
       <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -159,12 +162,19 @@
          <item>
           <widget class="QLabel" name="label_7">
            <property name="text">
-            <string>TextLabel</string>
+            <string>Produto</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEdit_5"/>
+          <widget class="QComboBox" name="CbPushProduct">
+           <property name="minimumSize">
+            <size>
+             <width>350</width>
+             <height>0</height>
+            </size>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>
@@ -173,12 +183,12 @@
          <item>
           <widget class="QLabel" name="label_8">
            <property name="text">
-            <string>TextLabel</string>
+            <string>quantidade</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_3"/>
+          <widget class="QDoubleSpinBox" name="EdPushQTD"/>
          </item>
         </layout>
        </item>
@@ -187,12 +197,12 @@
          <item>
           <widget class="QLabel" name="label_9">
            <property name="text">
-            <string>TextLabel</string>
+            <string>unidade</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QComboBox" name="comboBox_2"/>
+          <widget class="QComboBox" name="CbPushUni"/>
          </item>
         </layout>
        </item>
@@ -201,17 +211,17 @@
          <item>
           <widget class="QLabel" name="label_10">
            <property name="text">
-            <string>TextLabel</string>
+            <string>valor unitario</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_4"/>
+          <widget class="QDoubleSpinBox" name="EdPushValue"/>
          </item>
         </layout>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_4">
+        <widget class="QPushButton" name="BtPushAdd">
          <property name="text">
           <string>Adicionar</string>
          </property>
@@ -229,7 +239,7 @@
        </rect>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButton_5">
+     <widget class="QPushButton" name="BtPushSave">
       <property name="geometry">
        <rect>
         <x>610</x>
@@ -242,7 +252,7 @@
        <string>Salvar</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="lineEdit_6">
+     <widget class="QLineEdit" name="EdPushSsuplyer">
       <property name="geometry">
        <rect>
         <x>20</x>
@@ -257,12 +267,12 @@
        <rect>
         <x>20</x>
         <y>30</y>
-        <width>47</width>
-        <height>13</height>
+        <width>71</width>
+        <height>16</height>
        </rect>
       </property>
       <property name="text">
-       <string>TextLabel</string>
+       <string>Fornercedor</string>
       </property>
      </widget>
     </widget>
@@ -339,7 +349,14 @@
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="edSaleProduct"/>
+          <widget class="QComboBox" name="comboBox_4">
+           <property name="minimumSize">
+            <size>
+             <width>350</width>
+             <height>0</height>
+            </size>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>
@@ -376,7 +393,7 @@
          <item>
           <widget class="QLabel" name="label_4">
            <property name="text">
-            <string>Valor</string>
+            <string>Valor unitario</string>
            </property>
           </widget>
          </item>
@@ -443,9 +460,15 @@
          <rect>
           <x>0</x>
           <y>120</y>
-          <width>701</width>
+          <width>691</width>
           <height>431</height>
          </rect>
+        </property>
+        <property name="horizontalScrollBarPolicy">
+         <enum>Qt::ScrollBarAlwaysOn</enum>
+        </property>
+        <property name="selectionBehavior">
+         <enum>QAbstractItemView::SelectRows</enum>
         </property>
         <property name="showGrid">
          <bool>false</bool>
@@ -479,6 +502,237 @@
        <attribute name="title">
         <string>Cadastro</string>
        </attribute>
+       <widget class="QWidget" name="formLayoutWidget_2">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>691</width>
+          <height>481</height>
+         </rect>
+        </property>
+        <layout class="QFormLayout" name="formLayout_2">
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_12">
+           <property name="text">
+            <string>Nome</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLineEdit" name="edProdName"/>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_13">
+           <property name="text">
+            <string>Descrição</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLineEdit" name="edProdDescription"/>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="label_14">
+           <property name="text">
+            <string>Cor</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QComboBox" name="cdColor">
+           <item>
+            <property name="text">
+             <string>Adiconar</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Branco</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Preto</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Não aplicavel</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="label_15">
+           <property name="text">
+            <string>Fornecedor</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="QLineEdit" name="edProdSuplyer"/>
+         </item>
+         <item row="4" column="0">
+          <widget class="QLabel" name="label_16">
+           <property name="text">
+            <string>Conexão</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="1">
+          <layout class="QHBoxLayout" name="horizontalLayout_3">
+           <item>
+            <widget class="QCheckBox" name="chbProdWifi">
+             <property name="text">
+              <string>Wi-fi</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="chbProdZegbee">
+             <property name="text">
+              <string>Zegbee</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="chbProdRF">
+             <property name="text">
+              <string>RF</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="5" column="1">
+          <layout class="QVBoxLayout" name="verticalLayout_10">
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_5">
+             <item>
+              <widget class="QLabel" name="label_18">
+               <property name="text">
+                <string>Atributo</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QComboBox" name="cbProdAttr">
+               <property name="minimumSize">
+                <size>
+                 <width>150</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <item>
+                <property name="text">
+                 <string>Acionadores</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Tomadas</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Entradas</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Saidas</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_19">
+               <property name="text">
+                <string>Valor</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="edProdAttrValue"/>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btProdADD">
+             <property name="text">
+              <string>Adicionar</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QListView" name="lsProdAttr">
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>200</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="6" column="0">
+          <widget class="QLabel" name="label_20">
+           <property name="text">
+            <string>Tipo de Unidade</string>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="1">
+          <widget class="QComboBox" name="cbProdUnitType">
+           <item>
+            <property name="text">
+             <string>Unidade</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Comprimento</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="7" column="0">
+          <widget class="QLabel" name="label_21">
+           <property name="text">
+            <string>Barcode</string>
+           </property>
+          </widget>
+         </item>
+         <item row="7" column="1">
+          <widget class="QLineEdit" name="edProdBarcode"/>
+         </item>
+         <item row="8" column="0">
+          <widget class="QLabel" name="label_22">
+           <property name="text">
+            <string>Valor</string>
+           </property>
+          </widget>
+         </item>
+         <item row="8" column="1">
+          <widget class="QDoubleSpinBox" name="edProdValue"/>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QPushButton" name="btProdSave">
+        <property name="geometry">
+         <rect>
+          <x>610</x>
+          <y>490</y>
+          <width>75</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Salvar</string>
+        </property>
+       </widget>
       </widget>
      </widget>
     </widget>
@@ -517,7 +771,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>866</width>
+     <width>863</width>
      <height>21</height>
     </rect>
    </property>
@@ -535,42 +789,23 @@
   <tabstop>tbProd</tabstop>
   <tabstop>edSaleCliente</tabstop>
   <tabstop>edSaleBarcode</tabstop>
-  <tabstop>edSaleProduct</tabstop>
   <tabstop>edSalveQTD</tabstop>
   <tabstop>cbSaleUnit</tabstop>
   <tabstop>edSalePrice</tabstop>
   <tabstop>btSaleAddItem</tabstop>
   <tabstop>TbSale</tabstop>
   <tabstop>btSalveSave</tabstop>
-  <tabstop>lineEdit_6</tabstop>
-  <tabstop>lineEdit_5</tabstop>
-  <tabstop>doubleSpinBox_3</tabstop>
-  <tabstop>comboBox_2</tabstop>
-  <tabstop>doubleSpinBox_4</tabstop>
-  <tabstop>pushButton_4</tabstop>
+  <tabstop>EdPushSsuplyer</tabstop>
+  <tabstop>EdPushQTD</tabstop>
+  <tabstop>CbPushUni</tabstop>
+  <tabstop>EdPushValue</tabstop>
+  <tabstop>BtPushAdd</tabstop>
   <tabstop>tableView_3</tabstop>
-  <tabstop>pushButton_5</tabstop>
+  <tabstop>BtPushSave</tabstop>
   <tabstop>edStockSearch</tabstop>
   <tabstop>btStockSearch</tabstop>
   <tabstop>tbStock</tabstop>
  </tabstops>
  <resources/>
- <connections>
-  <connection>
-   <sender>stackedWidget</sender>
-   <signal>currentChanged(int)</signal>
-   <receiver>lbPgActual</receiver>
-   <slot>update()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>510</x>
-     <y>331</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>521</x>
-     <y>46</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>
