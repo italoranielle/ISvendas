@@ -1,5 +1,7 @@
 from django.db import models
 from django.utils import timezone
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 UNIT_TYPES = (('length','Comprimeto'),
@@ -43,9 +45,18 @@ class Purchase(models.Model):
     product = models.ForeignKey(Product,on_delete= models.PROTECT)
     quantity = models.FloatField()
     unit  =  models.CharField(max_length=2)
+    price = models.FloatField()
     datetime = models.DateTimeField(default = timezone.now)
 
 class Stock(models.Model):
-    product = models.ForeignKey(Product, on_delete = models.PROTECT)
+    product = models.OneToOneField(Product, on_delete = models.PROTECT)
     quantity = models.FloatField()
     unit = models.CharField(max_length = 2)
+
+
+@receiver(post_save, sender=Purchase, dispatch_uid="update_stock_count")
+def update_stock(sender, instance, **kwargs):
+    stock = Stock.objects.get(product=instance.product)
+    stock.quantity += instance.quantity
+    stock.save()
+    

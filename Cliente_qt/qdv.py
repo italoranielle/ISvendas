@@ -510,10 +510,6 @@ class Ui_MainWindow(object):
             self.cbProdAttr.addItem("Tomadas")
             self.cbProdAttr.addItem("Entradas")
             self.cbProdAttr.addItem("Saidas")
-
-
-
-
             
 
 

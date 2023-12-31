@@ -11,6 +11,7 @@ router.register(r'produtos2', views.ProductAPIView)
 urlpatterns = [
     path('', include(router.urls)),
     path('produtos/', views.ProductList.as_view()),
+    path('purchase/', views.PurchaseView.as_view()),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
 
