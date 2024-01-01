@@ -7,7 +7,7 @@ from django.dispatch import receiver
 UNIT_TYPES = (('length','Comprimeto'),
               ('unit','Unidade')
             )
-UNIT_ATRS = {UNIT_TYPES[0][0]:{'SIM':('mm','cm','M','Km'),
+UNIT_ATRS = {UNIT_TYPES[0][0]:{'SIM':('mm','cm','dm','M','dam','hm','Km'),
                                 'defalt':'M'
                               },
             UNIT_TYPES[1][0]:{'SIM':('UN'),
@@ -57,6 +57,19 @@ class Stock(models.Model):
 @receiver(post_save, sender=Purchase, dispatch_uid="update_stock_count")
 def update_stock(sender, instance, **kwargs):
     stock = Stock.objects.get(product=instance.product)
-    stock.quantity += instance.quantity
+    stock.quantity += unit_covert(instance.product.unit_type,instance.unit,instance.quantity)
     stock.save()
     
+
+def unit_covert(un_type,un,qtd):
+    qtd =float(qtd)
+    defalt_un = UNIT_ATRS[un_type]['defalt']
+    defalt_index = UNIT_ATRS[un_type]['SIM'].index(defalt_un) +1
+    un_index = UNIT_ATRS[un_type]['SIM'].index(un) +1 
+    pot = (un_index - defalt_index )
+    qtd_ = qtd*(10**pot)
+    return qtd_
+
+        
+
+
