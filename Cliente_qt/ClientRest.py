@@ -1,6 +1,7 @@
 import requests
 import pandas as pd
 import json
+from urllib.parse import quote
 
 
 Server_url = 'http://127.0.0.1:8000/api/v1'
@@ -9,6 +10,7 @@ Server_url = 'http://127.0.0.1:8000/api/v1'
 
 class Produto:
     def __init__(self):
+        self.pk = None
         self.name = None
         self.description = None
         self.color =  None
@@ -21,7 +23,16 @@ class Produto:
         self.barcode = None
         self.price_sell = None
 
-        self.url = '{}/produtos/'.format(Server_url)
+        self.url = '{}/produto'.format(Server_url)
+
+    def getPoduct(self,name):
+        data = {
+            'name': name
+        }
+        S = requests.Session()
+        result = S.get(self.url, params=data).json()
+        for key,item in result.items():
+            setattr(self,key,item)
 
 
     def addattrs(self,key_,value):
@@ -42,7 +53,6 @@ class Produto:
             'price_sell':self.price_sell
         }
         S = requests.Session()
-        print(data)
         result = S.post(self.url,data=data)
         if result.status_code == 201:
             return True

@@ -17,6 +17,15 @@ class ProductAPIView(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
 
 @permission_classes((permissions.AllowAny,))
+class ProductView(APIView):
+
+    def get(self, request, format=None):
+        name = request.GET.get('name','')
+        products = Product.objects.get(name__contains = name )
+        serializer = ProductSerializer(products, many=False)
+        return Response(serializer.data)
+
+@permission_classes((permissions.AllowAny,))
 class ProductList(APIView):
 
     def get(self, request, format=None):
@@ -47,3 +56,5 @@ class PurchaseView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+

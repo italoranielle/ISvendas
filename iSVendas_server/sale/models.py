@@ -64,8 +64,8 @@ def update_stock(sender, instance, **kwargs):
 def unit_covert(un_type,un,qtd):
     qtd =float(qtd)
     defalt_un = UNIT_ATRS[un_type]['defalt']
-    defalt_index = UNIT_ATRS[un_type]['SIM'].index(defalt_un) +1
-    un_index = UNIT_ATRS[un_type]['SIM'].index(un) +1 
+    defalt_index = UNIT_ATRS[un_type]['SIM'].index(defalt_un)
+    un_index = UNIT_ATRS[un_type]['SIM'].index(un)
     pot = (un_index - defalt_index )
     qtd_ = qtd*(10**pot)
     return qtd_

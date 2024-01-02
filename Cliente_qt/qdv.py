@@ -96,10 +96,10 @@ class Ui_MainWindow(object):
         self.label_7 = QtWidgets.QLabel(self.horizontalLayoutWidget_2)
         self.label_7.setObjectName("label_7")
         self.verticalLayout_6.addWidget(self.label_7)
-        self.CbPushProduct = QtWidgets.QComboBox(self.horizontalLayoutWidget_2)
-        self.CbPushProduct.setMinimumSize(QtCore.QSize(350, 0))
-        self.CbPushProduct.setObjectName("CbPushProduct")
-        self.verticalLayout_6.addWidget(self.CbPushProduct)
+        self.edPushProduct = QtWidgets.QLineEdit(self.horizontalLayoutWidget_2)
+        self.edPushProduct.setMinimumSize(QtCore.QSize(350, 0))
+        self.edPushProduct.setObjectName("edPushProduct")
+        self.verticalLayout_6.addWidget(self.edPushProduct)
         self.horizontalLayout_2.addLayout(self.verticalLayout_6)
         self.verticalLayout_7 = QtWidgets.QVBoxLayout()
         self.verticalLayout_7.setObjectName("verticalLayout_7")
@@ -366,6 +366,12 @@ class Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
+        self.completer = QtWidgets.QCompleter()
+        self.edPushProduct.setCompleter(self.completer)
+        self.model = QtCore.QStringListModel()
+        self.completer.setModel(self.model)
+
+
 
         self.retranslateUi(MainWindow)
         self.stackedWidget.setCurrentIndex(3)
@@ -423,6 +429,12 @@ class Ui_MainWindow(object):
         self.edProdValue.editingFinished.connect(lambda: self.updateProductInfo('price_sell',self.edProdValue.value()))
         self.btProdADD.clicked.connect(self.addAttribute)
         self.btProdSave.clicked.connect(self.saveProduct)
+        ##Pusher
+        self.edPushProduct.textChanged.connect(self.listProdusts)
+        self.edPushProduct.editingFinished.connect(self.setProduct)
+
+        
+        
 
 
 
@@ -511,6 +523,9 @@ class Ui_MainWindow(object):
             self.cbProdAttr.addItem("Entradas")
             self.cbProdAttr.addItem("Saidas")
             
+    def setProduct(self):
+        self.product.getPoduct(self.edPushProduct.text())
+        print(self.product.pk)
 
 
     # UI functions
@@ -526,6 +541,12 @@ class Ui_MainWindow(object):
             self.lbPgActual.setText('Vendas')
         elif self.stackedWidget.currentIndex() == 3:
             self.lbPgActual.setText('Produtos')
+
+    def listProdusts(self):
+        query = self.edPushProduct.text()
+        prods = self.products.GetProducts(query)
+        self.model.setStringList([ x['name'] for x in prods])
+
 
     def addAttribute(self):
         attr = self.cbProdAttr.currentText()
