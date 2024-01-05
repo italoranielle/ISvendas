@@ -106,7 +106,7 @@
      <number>0</number>
     </property>
     <property name="currentIndex">
-     <number>3</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="Stock">
      <property name="toolTip">
@@ -229,7 +229,7 @@
        </item>
       </layout>
      </widget>
-     <widget class="QTableView" name="tableView_3">
+     <widget class="QTableView" name="tbPushItens">
       <property name="geometry">
        <rect>
         <x>20</x>
@@ -449,7 +449,7 @@
        </rect>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tabProdutosList">
        <attribute name="title">
@@ -666,14 +666,7 @@
             </widget>
            </item>
            <item>
-            <widget class="QListView" name="lsProdAttr">
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>200</height>
-              </size>
-             </property>
-            </widget>
+            <widget class="QListWidget" name="lsProdAttr"/>
            </item>
           </layout>
          </item>
@@ -800,7 +793,7 @@
   <tabstop>CbPushUni</tabstop>
   <tabstop>EdPushValue</tabstop>
   <tabstop>BtPushAdd</tabstop>
-  <tabstop>tableView_3</tabstop>
+  <tabstop>tbPushItens</tabstop>
   <tabstop>BtPushSave</tabstop>
   <tabstop>edStockSearch</tabstop>
   <tabstop>btStockSearch</tabstop>

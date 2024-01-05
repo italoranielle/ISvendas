@@ -82,3 +82,30 @@ class Produtos:
         if result.status_code == 200:
             self.products =  pd.DataFrame(result.json()).rename(columns= self.colouns_pt)
             return result.json()
+
+class PurchaseList:
+    def __init__(self):
+        self.PurchaTable = []
+        self.list2server = []
+        self.url = '{}/purchase/'.format(Server_url) 
+        self.colouns_pt =  {
+                            'name':'Nome', 
+                            'description':'Descrição', 
+                            'quantity':'Quantidade',
+                            'unit':'Unidade',
+                            'unit_price':'Preço',
+                            'total_price':'Preço total',
+                            }  
+
+    def addItem(self,product,qtd,un,price):
+        self.PurchaTable.append({'pk':product.pk,'name':product.name,'description':product.description,'quantity':qtd,'unit':un,'unit_price':price,'total_price':qtd*price})
+        self.list2server.append({'product':product.pk,'quantity':qtd,'unit':un,'price':price})
+
+    def save(self):
+        S = requests.Session()
+        result = S.post(self.url,json=self.list2server)
+        if result.status_code == 201:
+            return True
+        else:
+            return False
+

@@ -131,9 +131,9 @@ class Ui_MainWindow(object):
         self.BtPushAdd = QtWidgets.QPushButton(self.horizontalLayoutWidget_2)
         self.BtPushAdd.setObjectName("BtPushAdd")
         self.horizontalLayout_2.addWidget(self.BtPushAdd)
-        self.tableView_3 = QtWidgets.QTableView(self.Compra)
-        self.tableView_3.setGeometry(QtCore.QRect(20, 160, 671, 331))
-        self.tableView_3.setObjectName("tableView_3")
+        self.tbPushItens = QtWidgets.QTableView(self.Compra)
+        self.tbPushItens.setGeometry(QtCore.QRect(20, 160, 671, 331))
+        self.tbPushItens.setObjectName("tbPushItens")
         self.BtPushSave = QtWidgets.QPushButton(self.Compra)
         self.BtPushSave.setGeometry(QtCore.QRect(610, 510, 75, 23))
         self.BtPushSave.setObjectName("BtPushSave")
@@ -397,15 +397,17 @@ class Ui_MainWindow(object):
         MainWindow.setTabOrder(self.EdPushQTD, self.CbPushUni)
         MainWindow.setTabOrder(self.CbPushUni, self.EdPushValue)
         MainWindow.setTabOrder(self.EdPushValue, self.BtPushAdd)
-        MainWindow.setTabOrder(self.BtPushAdd, self.tableView_3)
-        MainWindow.setTabOrder(self.tableView_3, self.BtPushSave)
+        MainWindow.setTabOrder(self.BtPushAdd, self.tbPushItens)
+        MainWindow.setTabOrder(self.tbPushItens, self.BtPushSave)
         MainWindow.setTabOrder(self.BtPushSave, self.edStockSearch)
         MainWindow.setTabOrder(self.edStockSearch, self.btStockSearch)
         MainWindow.setTabOrder(self.btStockSearch, self.tbStock)
 
+        self.prodsPushDict = {}
         #Objects
         self.products = ClientRest.Produtos()
         self.product = ClientRest.Produto()
+        self.purchaseList =ClientRest.PurchaseList()
 
         #Acions
         ## MainPage
@@ -432,6 +434,10 @@ class Ui_MainWindow(object):
         ##Pusher
         self.edPushProduct.textChanged.connect(self.listProdusts)
         self.edPushProduct.editingFinished.connect(self.setProduct)
+        self.BtPushAdd.clicked.connect(self.addIntemPusher)
+        self.BtPushSave.clicked.connect(self.PusheSave)
+
+
 
         
         
@@ -525,9 +531,16 @@ class Ui_MainWindow(object):
             
     def setProduct(self):
         self.product.getPoduct(self.edPushProduct.text())
-        print(self.product.pk)
+        if self.product.unit_type == 'length':
+            self.CbPushUni.addItems(('mm','cm','M','Km'))
+        else:
+            self.CbPushUni.addItems(('UN',))
+        #self.EdPushQTD.setValue(self.product.)
 
-
+    def PusheSave(self):
+        if (self.purchaseList.save()):
+            self.tbPushItens.setModel(QModel(pd.DataFrame([])))
+            
     # UI functions
     def changeModule(self,index):
         self.stackedWidget.setCurrentIndex(index)
@@ -545,7 +558,8 @@ class Ui_MainWindow(object):
     def listProdusts(self):
         query = self.edPushProduct.text()
         prods = self.products.GetProducts(query)
-        self.model.setStringList([ x['name'] for x in prods])
+        self.prodsPushDict = { x['name']:x['pk'] for x in prods }
+        self.model.setStringList(self.prodsPushDict.keys())
 
 
     def addAttribute(self):
@@ -556,6 +570,20 @@ class Ui_MainWindow(object):
         self.product.addattrs(attr,value)
         self.cbProdAttr.removeItem(self.cbProdAttr.currentIndex())
         self.edProdAttrValue.clear()
+
+    def addIntemPusher(self):
+        self.purchaseList.addItem(self.product,
+                                  self.EdPushQTD.value(),
+                                  self.CbPushUni.currentText(),
+                                  self.EdPushValue.value())
+        df = pd.DataFrame(self.purchaseList.PurchaTable)#.rename(columns= self.products.colouns_pt)
+        self.tbPushItens.setModel(QModel(df))
+        self.product = ClientRest.Produto()
+        self.edPushProduct.clear()
+        self.EdPushQTD.clear()
+        self.CbPushUni.clear()
+        self.EdPushValue.clear()
+        
 
 
 if __name__ == "__main__":
