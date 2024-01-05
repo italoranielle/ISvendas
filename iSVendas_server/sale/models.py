@@ -29,6 +29,10 @@ class Product(models.Model):
     barcode = models.CharField(max_length=50, null=True, blank=True)
     price_sell = models.FloatField()
 
+    def __str__(self):
+        return str(self.nome)
+
+
 class Sale(models.Model):
     client = models.CharField(max_length=250)
     total_price = models.FloatField()
@@ -38,25 +42,28 @@ class ItenSale(models.Model):
     product = models.ForeignKey(Product,on_delete= models.PROTECT)
     sale = models.ForeignKey(Sale,on_delete= models.PROTECT)
     quantity = models.FloatField()
-    unit  =  models.CharField(max_length=2)
+    unit  =  models.CharField(max_length=5)
     price_sold = models.FloatField()
 
 class Purchase(models.Model):
     product = models.ForeignKey(Product,on_delete= models.PROTECT)
     quantity = models.FloatField()
-    unit  =  models.CharField(max_length=2)
+    unit  =  models.CharField(max_length=5)
     price = models.FloatField()
     datetime = models.DateTimeField(default = timezone.now)
 
 class Stock(models.Model):
     product = models.OneToOneField(Product, on_delete = models.PROTECT)
     quantity = models.FloatField()
-    unit = models.CharField(max_length = 2)
+    unit = models.CharField(max_length = 5)
 
 
 @receiver(post_save, sender=Purchase, dispatch_uid="update_stock_count")
 def update_stock(sender, instance, **kwargs):
-    stock = Stock.objects.get(product=instance.product)
+    try:
+        stock = Stock.objects.get(product=instance.product)
+    except Stock.DoesNotExist:
+        stock = Stock(product=instance.product,quantity= 0,unit = UNIT_ATRS[instance.product.unit_type]['defalt'])
     stock.quantity += unit_covert(instance.product.unit_type,instance.unit,instance.quantity)
     stock.save()
     
