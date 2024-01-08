@@ -13,6 +13,7 @@ urlpatterns = [
     path('produto', views.ProductView.as_view()),
     path('produtos/', views.ProductList.as_view()),
     path('purchase/', views.PurchaseView.as_view()),
+    path('stock/', views.StockList.as_view()),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
 

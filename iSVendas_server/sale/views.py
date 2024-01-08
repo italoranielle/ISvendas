@@ -3,8 +3,8 @@ from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .models import  Product, Purchase
-from .serializers import ProductSerializer ,PurchaseSerializer
+from .models import  Product, Purchase, Stock
+from .serializers import ProductSerializer ,PurchaseSerializer, StockSerializer
 from rest_framework import permissions
 from rest_framework.decorators import api_view, permission_classes
 
@@ -18,7 +18,6 @@ class ProductAPIView(viewsets.ModelViewSet):
 
 @permission_classes((permissions.AllowAny,))
 class ProductView(APIView):
-
     def get(self, request, format=None):
         name = request.GET.get('name','')
         products = Product.objects.get(name__contains = name )
@@ -57,4 +56,10 @@ class PurchaseView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
+@permission_classes((permissions.AllowAny,))
+class StockList(APIView):
+    def get(self, request, format=None):
+        name = request.GET.get('name','')
+        products = Stock.objects.filter(product__name__contains = name )
+        serializer = StockSerializer(products, many=True)
+        return Response(serializer.data)

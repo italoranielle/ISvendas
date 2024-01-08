@@ -1,5 +1,5 @@
 from rest_framework import serializers 
-from .models import Product,Purchase
+from .models import Product,Purchase, Stock
 
 class ProductSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -28,4 +28,12 @@ class PurchaseSerializer(serializers.ModelSerializer):
                 'datetime']
 
 
-
+class StockSerializer(serializers.ModelSerializer):
+    product_teste = serializers.RelatedField(source='product', read_only=True)
+    class Meta:
+        model = Stock
+        fields = ['product',
+                'product_teste',
+                'quantity',
+                'unit' ,
+                ]
