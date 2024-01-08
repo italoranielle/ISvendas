@@ -109,3 +109,15 @@ class PurchaseList:
         else:
             return False
 
+
+class StokList():
+    def __init__(self):
+        self.stok = {}
+        self.url = '{}/stock/'.format(Server_url) 
+
+    def getStock(self,name = ''):
+        data = {
+            'name': name
+        }
+        S = requests.Session()
+        self.stok = S.get(self.url, params=data).json()

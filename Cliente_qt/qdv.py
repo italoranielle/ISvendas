@@ -408,6 +408,9 @@ class Ui_MainWindow(object):
         self.products = ClientRest.Produtos()
         self.product = ClientRest.Produto()
         self.purchaseList =ClientRest.PurchaseList()
+        self.stock =ClientRest.StokList()
+        self.updateStock()
+
 
         #Acions
         ## MainPage
@@ -436,6 +439,8 @@ class Ui_MainWindow(object):
         self.edPushProduct.editingFinished.connect(self.setProduct)
         self.BtPushAdd.clicked.connect(self.addIntemPusher)
         self.BtPushSave.clicked.connect(self.PusheSave)
+        ##Stock
+        self.edStockSearch.textChanged.connect(self.updateStock)
 
 
 
@@ -583,6 +588,14 @@ class Ui_MainWindow(object):
         self.EdPushQTD.clear()
         self.CbPushUni.clear()
         self.EdPushValue.clear()
+
+    def updateStock(self):
+        self.stock.getStock(self.edStockSearch.text())
+        df = pd.DataFrame(self.stock.stok)
+        print(df)
+        self.tbStock.setModel(QModel(df))
+        
+
         
 
 

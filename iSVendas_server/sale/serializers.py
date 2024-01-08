@@ -29,11 +29,12 @@ class PurchaseSerializer(serializers.ModelSerializer):
 
 
 class StockSerializer(serializers.ModelSerializer):
-    product_teste = serializers.RelatedField(source='product', read_only=True)
+    product = ProductSerializer(read_only=True) 
+
+
     class Meta:
         model = Stock
         fields = ['product',
-                'product_teste',
                 'quantity',
                 'unit' ,
                 ]

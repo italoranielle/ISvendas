@@ -60,6 +60,9 @@ class PurchaseView(APIView):
 class StockList(APIView):
     def get(self, request, format=None):
         name = request.GET.get('name','')
-        products = Stock.objects.filter(product__name__contains = name )
+        if (name == '' ):
+            products = Stock.objects.filter(quantity__gt = 0 )
+        else:
+            products = Stock.objects.filter(product__name__contains = name )
         serializer = StockSerializer(products, many=True)
         return Response(serializer.data)
